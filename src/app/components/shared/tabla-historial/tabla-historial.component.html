@@ -1,0 +1,128 @@
+<div class=" my-3" id="histori">
+    <div class="">
+        <form [formGroup]="forma" (ngSubmit)="cargarTabla()" class="w-100 d-md-flex flex-wrap">
+            <mat-form-field class=" d-block">
+                <mat-label>Dias a Consultar</mat-label>
+                <mat-select name="dias" #fecha formControlName="dias" (selectionChange)="cambiar(fecha.value)"
+                    [(value)]="selected">
+                    <mat-option value="7">7</mat-option>
+                    <mat-option value="15">15</mat-option>
+                    <mat-option value="30">30</mat-option>
+                    <mat-option value="60">60</mat-option>
+                    <mat-option value="120">120</mat-option>
+                    <mat-option value="0">Personalizado</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="opcionFecha" class="d-md-flex">
+                <mat-form-field class="mr-3 d-block">
+                    <input matInput type="date" formControlName="inicio" placeholder="Inicio" name="inicio" value=""
+                        #inicio>
+                </mat-form-field>
+                <mat-form-field class="d-block">
+                    <input matInput type="date" formControlName="fin" placeholder="Fin" name="fin" value="" #fin>
+                </mat-form-field>
+            </div>
+            <mat-form-field class="d-block ml-md-2">
+                <mat-label>Numero de Registros</mat-label>
+                <mat-select name="registros" formControlName="registros">
+                    <mat-option value="5">5</mat-option>
+                    <mat-option value="10">10</mat-option>
+                    <mat-option value="25">25</mat-option>
+                    <mat-option value="50">50</mat-option>
+                    <mat-option value="100">100</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="ml-md-3 mt-2">
+                <button type="submit" class="btn btn-primary btn-sm btn-block" [disabled]="!forma.valid"><span
+                        class="icon-spin3 animate-spin" *ngIf="disabled"></span> Visualizar</button>
+            </div>
+            <div class="ml-md-3 mt-2 mb-2">
+                <button type="button" class="btn btn-outline-success btn-sm btn-block" [disabled]="!forma.valid" (click)="exportarHistorial()"><span class="icon-floppy" *ngIf="!iconExport"></span>
+                    <span class="icon-spin3 animate-spin" *ngIf="iconExport"></span>&nbsp;Descargar</button>
+            </div>
+        </form>
+        <!-- <span class="icon-spin3 animate-spin"></span> -->
+    </div>
+    <div *ngIf="loading">
+        <!-- <table class="table opc-tabla shadow-sm">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Guía</td>
+                    <td>Remitente</td>
+                    <td>Destinatario</td>
+                    <td>Tipo</td>
+                    <td>Acciones</td>
+                    <td>Estatus</td>
+                    <td>Comentario</td>
+                </tr>
+            </thead>
+            <cdk-virtual-scroll-viewport itemSize="10" class="border">
+                <tr *cdkVirtualFor="let data of historial; let i = index" class="animated fadeIn">
+                    <td data-label="Fecha">{{data.fecha}}</td>
+                    <td data-label="Tracking">{{data.tracking}}</td>
+                    <td data-label="Remitente">{{data.nombrer}}</td>
+                    <td data-label="Destinatario">{{data.nombred}}</td>
+                    <td data-label="Tipo">{{data.tipoguia}} {{data.pesoguia}}KG {{data.tipoguia}} {{data.pesoguia}}KG</td>
+                    <td data-label="Acciones">hola</td>
+                    <td data-label="Status">{{(data.statusenvio == 5) ? 'Envio Cancelado' : 'Revisar Manualmente'}}</td>
+                    <td data-label="Comentario">{{data.comentario}}</td>
+                </tr>
+            </cdk-virtual-scroll-viewport>
+        </table> -->
+        <table class="table opc-tabla shadow-sm">
+            <thead class="bg-light shadow-sm">
+                <tr>
+                    <td>Fecha</td>
+                    <td>Guía</td>
+                    <td>Tipo</td>
+                    <td>Estatus</td>
+                    <td>Acciones</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of historial">
+                    <td data-label="Fecha">{{data.fecha}}</td>
+                    <td data-label="Tracking">{{data.tracking}}</td>
+                    <td data-label="Tipo">{{data.tipoguia}} {{data.pesoguia | number}}KG</td>
+                    <td data-label="Status" [ngClass]="{'text-danger': data.statusenvio == 5}">
+                        {{(data.statusenvio == 5) ? 'Envio Cancelado' : 'Revisar Manualmente'}}</td>
+                    <td data-label="Acciones" class="text-right">
+                        <div class="row text-right justify-content-end justify-content-md-center" *ngIf="data.statusenvio != 5">
+                            <div class="col-2">
+                                <a [href]="(data.filename) ? (data.filename | url:paqueteria) : data.rutapdf | url:paqueteria" class="text-success" target="_blank"
+                                    title="descargar pdf"><span class="icon-download-1 h6"></span></a>
+                            </div>
+                            <div class="col-2">
+                                <span class="text-info icon-info-circled h6"
+                                    (click)="openDialogTracking(data.tracking)" title="Ultimo Seguimiento" style="cursor: pointer;" *ngIf="paqueteria != 'estafeta'"></span>
+                            </div>
+                            <div class="col-2">
+                                <span *ngIf="data.statusenvio != 5 && paqueteria != 'estafeta'" class="text-danger icon-cancel-circled h6" (click)="confirmacionCancelar(data.tracking)" title="Cancelar Guia" style="cursor: pointer;"></span>
+                            </div>
+                            <div class="col-2">
+                                <span class="icon-help-circled h6" style="cursor: pointer;"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center"><span class="card-text" (click)="openDialogDetalles(data)"><strong
+                                class="text-primary" style="cursor: pointer">Detalles</strong></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row mb-3">
+            <div class="col-md-6 mt-3">
+                <strong>Total Registros: {{auxiliar.length}}</strong>
+            </div>
+            <div class="col-md-6 text-center mt-3">
+                <button class="btn btn-outline-dark btn-sm mr-2 mt-1" *ngIf="activeAnterior"
+                    (click)="verAnterior()">Anterior</button>
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2 mt-1" *ngFor="let pagina of paginas"
+                    [ngClass]="{'active': paginaActive == pagina}" (click)="verPagina(pagina)">{{pagina}}</button>
+                <button class="btn btn-outline-dark btn-sm mt-1" *ngIf="activeSiguiente"
+                    (click)="verSiguiente()">Siguiente</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,241 @@
+<div *ngIf="data.tipoVista == 'detalles'">
+    <h1 mat-dialog-title class="">Detalles de <strong class="text-primary">Historal</strong></h1>
+
+    <div mat-dialog-content>
+        <table class="table tabla-detalle">
+            <tr style="font-size: 14px">
+                <td data-label="Fecha">{{data.fecha}}</td>
+                <td data-label="Tracking">{{data.tracking}}</td>
+                <td data-label="Remitente">{{data.nombrer || '&nbsp;'}}</td>
+                <td data-label="Destinatario">{{data.nombred || '&nbsp;'}}</td>
+                <td data-label="Tipo">{{data.tipo}} {{data.peso}}KG</td>
+                <td data-label="usuario" *ngIf="data.idusuario != null">{{data.idusuario}}&nbsp;</td>
+                <td data-label="Status" [ngClass]="{'text-danger': data.status == 5}">
+                    {{(data.status == 5) ? 'Envio Cancelado' : 'Revisar Manualmente'}}</td>
+                <td data-label="comentario">
+                    {{(data.comentario && data.comentario != '') ? data.comentario : 'No hay comentario'}}</td>
+            </tr>
+        </table>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'tracking' && data.paqueteria == 'fedex'">
+    <div *ngIf="loading; else carga">
+        <div class="text-center border-bottom border-dark py-3">
+            <h6><b>{{data.tracking}}</b></h6>
+            <h3 class="py-2 text-primary">
+                {{(status.Events?.EventDescription) ? status.Events?.EventDescription : status.Events[0]?.EventDescription}}
+            </h3>
+            <h5>{{(status.Events?.Timestamp) ? (status.Events?.Timestamp | date) : status?.Events[0]?.Timestamp  | date}}
+            </h5>
+        </div>
+        <div mat-dialog-actions>
+            <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+            <a [href]="'https://rastreo.globalpaq.com/'+ data.paqueteria + '/' + data.tracking" target="_blank"
+                style="text-decoration: none;" mat-button class="btn btn-outline-primary btn-sm ml-3">Mas detalles</a>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'tracking' && data.paqueteria == 'dhl'">
+    <div *ngIf="loading; else carga">
+        <div class="text-center border-bottom border-dark py-3">
+            <h6><b>{{data.tracking}}</b></h6>
+            <h3 class="py-2 text-primary">
+                {{(status?.ShipmentInfo?.ShipmentEvent?.ServiceEvent?.Description) ? status?.ShipmentInfo?.ShipmentEvent?.ServiceEvent?.Description : status?.ShipmentInfo?.ShipmentEvent[0]?.ServiceEvent?.Description}}
+            </h3>
+            <h5>
+                {{(status?.ShipmentInfo?.ShipmentEvent.Date) ? (status?.ShipmentInfo?.ShipmentEvent.Date | date) : status?.ShipmentInfo?.ShipmentEvent[status?.ShipmentInfo?.ShipmentEvent.length - 1].Date | date}}
+            </h5>
+        </div>
+        <div mat-dialog-actions>
+            <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+            <a [href]="'https://rastreo.globalpaq.com/'+ data.paqueteria + '/' + data.tracking" target="_blank"
+                style="text-decoration: none;" mat-button class="btn btn-outline-primary btn-sm ml-3">Mas detalles</a>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'cancelar'">
+    <div *ngIf="loading; else carga">
+        <div class="text-center border-bottom border-dark py-3">
+            <h5><b>Cancelar Guia</b></h5>
+            <h4 class="py-2 text-primary">{{mensaje}}</h4>
+        </div>
+
+        <div mat-dialog-actions>
+            <button class="btn btn-outline-danger btn-sm" mat-button [mat-dialog-close]="mensaje">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'confirmarCancelar'">
+    <div>
+        <h2 class="mat-dialog-title text-center">¿Seguro que desea cancelar la guia?</h2>
+        <p class="text-justify">
+            Al intentar usar una guia cancelada se hara acreedor a una penalizacion equivalente al costo de la misma y
+            la disminucion de sus guias disponibles
+        </p>
+    </div>
+    <div mat-dialog-actions class="text-center">
+        <button class="btn btn-outline-danger btn-sm mx-4" mat-button [mat-dialog-close]="0"
+            (click)="onNoClick()">Cancelar</button>
+        <button class="btn btn-outline-success mx-4" mat-button [mat-dialog-close]="1" cdkFocusInitial>Ok</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'addCarrito'">
+    <div>
+        <h2 class="mat-dialog-title text-center text-primary">Producto Agregado!!</h2>
+        <table class="table tabla-detalle">
+            <tr style="font-size: 14px">
+                <td data-label="Descripción">{{data.articulo.articulo}}</td>
+                <td data-label="Precio">{{data.articulo.precio}}</td>
+                <td data-label="Cantidad">{{data.articulo.cantidad}}</td>
+                <td data-label="Subtotal">{{(data.articulo.precio * data.articulo.cantidad) | number}}</td>
+            </tr>
+        </table>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+        <button class="btn btn-outline-info btn-sm mx-4 " mat-button [mat-dialog-close]="0" (click)="onNoClick()">Seguir
+            Agregando</button>
+        <button class="btn btn-outline-success btn-sm mx-4 mt-3 mt-md-0" mat-button [mat-dialog-close]="1"
+            cdkFocusInitial>Ver Carrito</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'verDetalle'">
+    <div>
+        <h2 class="mat-dialog-title text-center text-primary">Detelle Pedido</h2>
+        <div mat-dialog-content>
+            <ul class="border shadow-sm">
+                <li class="bg-white w-100" *ngFor="let articulo of data.articulo">
+                    <div class="row d-flex justify-content-center align-items-center" style="min-height: 50px;">
+                        <div class="col-5 col-md-1 p-4 d-flex align-items-center p-md-0 d-md-block h-25">
+                            <img [src]="articulo.articulo | img" alt="" class="img-fluid">
+                        </div>
+                        <div class="col-md-4 text-center text-sm-left">
+                            <p>{{articulo.articulo}}</p>
+                        </div>
+                        <div class="col-5 col-md-2 mt-1 text-center text-sm-left">
+                            <label for="">Precio</label><br>
+                            <label for=""><b>${{articulo.precio}}</b></label>
+                        </div>
+                        <div class="col-5 col-md-2 mt-1 text-center text-sm-left">
+                            <label for="">Cantidad</label><br>
+                            <label for=""><b>{{articulo.cantidad}}</b></label>
+                        </div>
+                        <div class="col-12 col-md-2 mt-1 text-center text-md-left">
+                            <label for="">Subtotal</label>
+                            <p class="h4">${{articulo.cantidad * articulo.precio | number}}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center flex-wrap">
+        <button class="btn btn-outline-danger btn-sm mx-4 " mat-button [mat-dialog-close]="0"
+            (click)="onNoClick()">Cerrar</button>
+
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'factura'">
+    <h2 class="mat-dialog-title text-center text-primary">Factura</h2>
+
+    <div mat-dialog-content>
+        <div *ngIf="!isFactura; else noFactura">
+            <div class="d-flex justify-content-center flex-wrap my-4">
+
+                <div class="mr-3 mb-3" *ngFor="let factura of factPdf">
+                    <button class="btn btn-outline-danger" (click)="verFactura(factura)"><span
+                            class="icon-file-pdf h3"></span><br>Descargar</button>
+                </div>
+                <div class="mr-3 mb-3" *ngFor="let factura of factXml">
+                    <button class="btn btn-outline-success" (click)="verFactura(factura)"><span
+                            class="icon-file-excel h3"></span><br>Descargar</button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noFactura>
+            <p class="alert alert-info">
+                <span class="icon-attention-circled h5"></span> Esta operación no tiene factura o todavía no se a
+                generado.
+            </p>
+        </ng-template>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'errorPermiso'">
+    <div mat-dialog-content>
+        <div [innerHTML]="data.message"></div>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center">
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'verReclamos'">
+    <h1 class="mat-dialog-title text-center text-primary">Contenido</h1>
+    <div mat-dialog-content>
+        <ul class="list-group shadow-sm" >
+            <li class="list-group-item" *ngFor="let item of reContenido">
+                <b>{{item}}</b>
+                <p>{{data.reclamo.contenido[item]}}</p>
+            </li>
+        </ul>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center">
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+
+<div *ngIf="data.tipoVista == 'verComentarios'">
+    <h1 class="mat-dialog-title text-center text-primary">Comentarios</h1>
+    <div mat-dialog-content>
+        <div *ngIf="data.reclamo.comentarios == null">
+            <p class="h1 text-center p-3" >
+                No hay Comentarios
+            </p>
+        </div>
+        <ul class="list-group shadow-sm" >
+            <li class="list-group-item" *ngFor="let item of data.reclamo.comentarios">
+                <div class="d-flex justify-content-start align-items-center mb-2 flex-wrap">
+                    <b><span class="icon-user"></span> {{item.usuario}}</b>
+                    <small class="ml-2">{{item.fecha | date:'medium'}}</small>
+                </div>
+                
+                <p class="ml-2">{{item.comentario}}</p>
+            </li>
+        </ul>
+    </div>
+    <div mat-dialog-actions class="d-flex justify-content-center">
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+<div *ngIf="data.tipoVista == 'cuponCreado'">
+    <h1 mat-dialog-title class=""><strong class="text-primary">{{data.titulo}}</strong></h1>
+    <div mat-dialog-content>
+        <table class="table tabla-detalle">
+            <tr style="font-size: 14px">
+                <td data-label="Cupon" *ngFor="let a of data.cupon">{{a.code}}</td>
+            </tr>
+        </table>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn btn-outline-danger btn-sm" mat-button (click)="onNoClick()">Cerrar</button>
+    </div>
+</div>
+<ng-template #carga>
+    <div class="text-center">
+        <span class="icon-spin3 animate-spin h3"></span>
+    </div>
+
+</ng-template>

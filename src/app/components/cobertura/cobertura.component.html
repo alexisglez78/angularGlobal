@@ -1,0 +1,132 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn" *ngIf="carga;else spin">
+        <h3>Cobertura</h3>
+        <hr />
+
+        <div class="card mt-4 shadow-sm">
+            <div class="card-body">
+                <form [formGroup]="forma" (ngSubmit)="getCobertura()">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <mat-form-field class="d-block">
+                                <span matPrefix class="text-primary icon-location-outline">&nbsp;</span>
+                                <input type="number" matInput placeholder="Origen" value="" formControlName="origen">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="d-block">
+                                <span matPrefix class="text-primary icon-location-outline">&nbsp;</span>
+                                <input type="number" matInput placeholder="Destino" value="" formControlName="destino">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2 mt-3">
+                            <button class="btn btn-primary btn-sm" type="submit" [disabled]="!forma.valid"><span class="icon-spin3 animate-spin" *ngIf="loading"></span>&nbsp;Consultar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mt-5 text-center" *ngIf="error">
+            <span class="alert alert-danger d-block">No Hay Servicios Disponibles</span>
+        </div>
+        <div class="row justify-content-center" *ngIf="view">
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-5 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-4 h-50"
+                            style="min-height: 50px;max-height: 180px;">
+                            <img src="../../../assets/img/fedex-economy.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" [innerHTML]="(cobFedex?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'"></h5>
+                                <table class="table border text-center">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class=" " [ngClass]="{'icon-ok-circled text-success': cobFedex.services.length > 1 , 'icon-cancel-circled text-danger': cobFedex.services.length <= 1}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-5 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-4 h-50"
+                            style="min-height: 50px;max-height: 180px;">
+                            <img src="../../../assets/img/dhl-economy.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title" [innerHTML]="(cobDhl?.message == 'Cobertura Normal') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'"></h5>
+                                <table class="table border text-center">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-ok-circled text-success"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <div class="card mb-2 mt-2 shadow-sm" style="max-width: 500px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 d-flex align-content-center p-4 h-25"
+                            style="min-height: 50px;max-height: 180px;">
+                            <img src="../../../assets/img/estafeta.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap">
+                                    <h5 class="card-title" [innerHTML]="(cobEstafeta?.message == 'cobertura normal Estafeta') ? '<b class=text-success>NO</b> ES ZONA EXTENDIDA' : '<b class=text-danger>SI</b> ES ZONA EXTENDIDA'"></h5>
+                                    <h5 class="card-title" [innerHTML]="'Ocurre: '+ '<b>' + cobEstafeta.ocurre + '</b>'"></h5>
+                                </div>
+                                
+                                <table class="table border text-center">
+                                    <thead>
+                                        <tr>
+                                            <td class="border">Terrestre</td>
+                                            <td>Dia Sig</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border"><span class="icon-ok-circled text-success"></span></td>
+                                            <td><span class="icon-ok-circled text-success"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #spin>
+    <div class="text-center h1">
+        <span class="icon-spin3 animate-spin"></span>
+    </div>
+</ng-template>

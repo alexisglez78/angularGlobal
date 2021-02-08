@@ -1,0 +1,230 @@
+<div class="mx-3 text-justify text-md-left mt-4 pt-4 mt-md-0 animated fadeIn">
+    <div class="contenedor animated fadeIn fast">
+        <h3 style="margin-bottom: .5rem;
+        font-weight: 500;
+        line-height: 1.2;font-size: 1.75rem;">Ayuda</h3>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <a [routerLink]="['/aclaraciones']">
+                        <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool7">
+                        Aclarciones de Atención a Clientes</button> </a>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-outline-dark btn-lx px-5 btn-cool">
+                        Aclaraciones Cobranza</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool2">
+                        Material de Envío</button>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://globalpaq.com/servicios.html" target="_blank" rel="noopener noreferrer"> <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool3">
+                      Cargos adicionales</button> </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://globalpaq.com/servicios.html#informacion-util-para-tu-envio" target="_blank" rel="noopener noreferrer">
+                        <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool4">
+                        Información Útil para Envíos</button> </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://globalpaq.com/preguntas-frecuentes.html" target="_blank" rel="noopener noreferrer"> <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool5">
+                        Preguntas Frecuentes</button> </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://globalpaq.com/servicios.html" target="_blank" rel="noopener noreferrer"> <button class="btn btn-outline-dark btn-lx px-5 btn-cool btn-cool6">
+                        Articulos Prohíbidos</button> </a>
+                </div>
+
+
+            </div>
+            <!--       
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a (mouseover)="over('cobranza')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span *ngIf="hide == 'cobranza'" class="left icon icon-attention-circled"></span>
+                            <span class="right title" style="width: 26em;"><span class="slant-right"></span>Aclaraciones Cobranza</span>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a (mouseover)="over('material')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span *ngIf="hide == 'material'" class="left icon icon-shopping-bag-1">
+                            </span><span class="right title" style="width: 26em;"><span class="slant-right"></span>Material de Envío</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a (mouseover)="over('cargos')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span *ngIf="hide == 'cargos'" class="left icon icon-plus-squared"></span>
+                            <span class="right title" style="width: 26em;"><span class="slant-right"></span>Cargos Adicionales</span>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a (mouseover)="over('info')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span class="right title" style="width: 26em;">Información Útil para Envíos</span>
+                            <span *ngIf="hide == 'info'" class="left icon icon-info-circled-2"><span class="slant-right"></span></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a (mouseover)="over('preguntas')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span *ngIf="hide == 'preguntas'" class="left icon icon-help-circled-3"></span>
+                            <span class="right title" style="width: 26em;"><span class="slant-right"></span>Preguntas Frecuentes</span>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a (mouseover)="over('articulos')" (mouseout)="out(' ')" href="#" class="btn left">
+                            <span class="right title" style="width: 26em;">Artículos Prohibidos</span>
+                            <span *ngIf="hide == 'articulos'" class="left icon icon-block"><span class="slant-right"></span></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+
+
+                <a (mouseover)="over('atc')" (mouseout)="out(' ')" href="#" class="btn left">
+                    <span *ngIf="hide == 'atc'" class="left icon icon-warning-empty"></span>
+                    <span class="right title" style="width: 29em;"><span class="slant-right"></span>Aclaraciones de Atención a Clientes</span>
+                </a>
+
+            </div>
+            <div class="content">
+
+
+                <a (mouseover)="over('atc')" (mouseout)="out(' ')" href="#" class="btn left">
+                    <span class="left icon icon-warning-empty"></span>
+                    <span class="right title" style="width: 29em;"><span class="slant-right"></span>Aclaraciones de Atención a Clientes</span> 
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 2%;">
+
+            <div class="col-md-6">
+                <button class="btn left" (mouseover)="over('cobranza')" (mouseout)="out(' ')">
+                        <span *ngIf="hide == 'cobranza'" class="left icon icon-attention-circled"></span>
+                        <span class="left title">Aclaraciones Cobranza</span>  
+                    
+                    
+                     <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('material')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'material'" class="col-md-1" style="float: left;margin-left: -7%;width:auto" > 
+                        <span  class="icon-attention-circled i-ho" ></span>
+                        <div class="vertical-line" ></div>  
+                    </div>
+                    Material de Envío
+                    <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('cargos')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'cargos'" class="col-md-1" style="float: left;margin-left: -7%;width:auto" >    
+                        <span  class="icon-plus-squared i-ho" ></span>
+                        <div class="vertical-line" ></div> 
+                    </div>
+                    Cargos Adicionales
+                     <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('info')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'info'" class="col-md-1" style="float: left;margin-left: -7%;width:auto" >    
+                        <span  class="icon-info-circled-2 i-ho" ></span>
+                        <div class="vertical-line" ></div> 
+                    </div>
+                    Información Útil para Envíos
+                     <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('preguntas')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'preguntas'" class="col-md-1" style="float: left;margin-left: -7%;width:auto" >    
+                        <span  class="icon-edit i-ho" ></span>
+                        <div class="vertical-line" ></div> 
+                    </div>
+                    Preguntas Frecuentes
+                    <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('articulos')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'articulos'" class="col-md-1" style="float: left;margin-left: -7%;width:auto" >    
+                        <span  class="icon-shopping-bag-1 i-ho" ></span>
+                        <div class="vertical-line" ></div> 
+                    </div>
+                    Articulos Disponibles
+                    <div class="button__horizontal"></div>
+                    <div class="button__vertical"></div> 
+                   </button>
+            </div>
+            <div class="col-md-6">
+                <button class="button" (mouseover)="over('aclaraciones')" (mouseout)="out(' ')">
+                    <div *ngIf="hide == 'aclaraciones'" class="col-md-1" style="float: left;margin-left: -7%;margin-top: -4%;width:auto" >
+                        
+                        <span >&nbsp;     
+                        <span class="icon-warning-empty i-ho" ></span> </span>
+                        <div class="vertical-line" style="height: 15%;margin: -3.9% 0% 0% 3%;"></div> 
+                        </div>
+                        Aclaraciones de Atencion a Clientes
+                        <div class="button__horizontal"></div>
+                        <div class="button__vertical"></div> 
+                        </button>
+            </div>
+
+        </div>
+-->
+
+
+            <!--  <div id="container">
+            <div id="button-container">
+                <div id="button" class="yellow">
+                    <div id="clock">
+                        <div id="clock-hand1"></div>
+                        <div id="clock-hand2"></div>
+                    </div>
+                    <p>Time schedule</p>
+                </div>
+            </div>
+
+            <div id="button-container">
+                <div id="button" class="green">
+                    <div id="order">
+                        <div id="order-line"></div>
+                        <div id="order-line"></div>
+                    </div>
+                    <p>Order list</p>
+                </div>
+            </div>
+
+            <div id="button-container">
+                <div id="button" class="blue">
+                    <div id="camera">
+                        <div id="camera-button"></div>
+                        <div id="camera-optics"></div>
+                    </div>
+                    <p>My photos</p>
+                </div>
+            </div>
+        </div>
+-->
+        </div>
+    </div>
